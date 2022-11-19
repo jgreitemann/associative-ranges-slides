@@ -1,4 +1,5 @@
 {
   "theme": "night",
-  "highlightTheme": "github-dark-dimmed"
+  "highlightTheme": "github-dark-dimmed",
+  "css": "style.css"
 }

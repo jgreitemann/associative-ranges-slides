@@ -1,3 +1,4 @@
 {
-  "slideNumber": true
+  "slideNumber": true,
+  "transition": "slide"
 }
