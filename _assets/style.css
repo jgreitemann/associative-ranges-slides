@@ -1,0 +1,97 @@
+:root {
+    --r-heading-text-shadow: black 0 0 5px, black 0 0 10px;
+}
+
+ul {
+    line-height: 1.75;
+}
+
+iframe {
+    pointer-events: none;
+}
+
+pre.code-wrapper {
+    border-radius: 5pt;
+}
+
+pre.code-wrapper code.hljs {
+    overflow: clip;
+    border-radius: 5pt;
+}
+
+pre.code-wrapper.mark {
+    box-sizing: border-box;
+    overflow-x: unset;
+    overflow-y: clip;
+}
+
+pre.code-wrapper.error {
+    border-right: solid #cc0000 5pt;
+}
+
+pre.code-wrapper.question {
+    border-right: solid #eeaa00 5pt;
+}
+
+pre.code-wrapper.no-error {
+    border-right: solid #00cc00 5pt;
+}
+
+pre.code-wrapper.mark code.hljs {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+pre.mark:after {
+    display: block;
+    position: absolute;
+    top: calc(50% - 1.2em/2);
+    right: -2.5em;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    text-align: center;
+    font-weight: bolder;
+}
+
+pre.error:after {
+    content: "!";
+    color: #cc0000;
+    border: solid #cc0000 3px;
+}
+
+pre.question:after {
+    content: "?";
+    color: #eeaa00;
+    border: solid #eeaa00 3px;
+}
+
+pre.no-error:after {
+    content: "✓";
+    color: #00cc00;
+    border: solid #00cc00 3px;
+}
+
+pre.squiggle-params span.hljs-params,
+pre.squiggle-mean tr.highlight-line span.hljs-built_in,
+pre.squiggle-return span.hljs-keyword + span.hljs-built_in {
+    text-decoration: #ee0000 wavy underline 1pt;
+    text-decoration-skip-ink: none;
+}
+
+pre.code-centered {
+    text-align: center;
+}
+
+p.qr {
+    display: block;
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    top: calc(50% - 125px);
+    right: 10px;
+}
+
+p.qr + * {
+    margin-right: 250px;
+}
