@@ -17,7 +17,13 @@ jobs:
     - name: Generate static site
       run: reveal-md slides.md --static
     - name: Stage missing assets
-      run: cp lightning.jpg _static
+      run: >
+        cp
+        assets/lightning.jpg
+        assets/github.svg
+        assets/twitter.svg
+        assets/mastodon.svg
+        _static/assets
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:

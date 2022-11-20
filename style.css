@@ -88,10 +88,32 @@ p.qr {
     position: fixed;
     width: 250px;
     height: 250px;
-    top: calc(50% - 125px);
+    top: calc(25% - 125px);
     right: 10px;
 }
 
 p.qr + * {
     margin-right: 250px;
+}
+
+li.no-bullets > ul > li::marker {
+    content: none;
+}
+
+li > a[href^="https://github.com"]::before {
+    content: url("assets/github.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+li > a[href^="https://twitter.com"]::before {
+    content: url("assets/twitter.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+li > a[href^="https://fosstodon.org"]::before {
+    content: url("assets/mastodon.svg");
+    vertical-align: middle;
+    margin-right: 0.5em;
 }

@@ -1,14 +1,11 @@
-<!-- .slide: data-background-image="lightning.jpg" data-background-opacity="0.4" -->
+<!-- .slide: data-background-image="assets/lightning.jpg" data-background-opacity="0.4" -->
 ## `ranges::operator|` is&nbsp;associative
-<!-- .element: class="shadow" -->
 
 <br/>
 <br/>
 
 ### Jonas Greitemann
-<!-- .element: class="shadow" -->
 https://greitemann.dev
-<!-- .element: class="shadow" -->
 
 ---
 
@@ -289,6 +286,8 @@ fmt::print("{}\n", std::views::iota(0, 30)
 <!-- .element: class="mark question" data-id="pipe-usage" -->
 
 Notes:
+- Satisfying
+- Avoids confusion: laziness implied
 - Difficult to enable in C++20 w/o injecting in `std::ranges`
 
 ----
@@ -378,12 +377,16 @@ Notes:
 
 ---
 
-![qr.svg](qr.svg)
+![assets/qr.svg](assets/qr.svg)
 <!-- .element: class="qr" -->
 
 ### That's it
 
 * Blog post, Godbolt links & slides: [https://greitemann.dev/pipe-assoc][1]
+* <!-- .element: class="no-bullets" --> Find me online
+  * [@jgreitemann](https://github.com/jgreitemann)
+  * [@jg424](https://twitter.com/jg424)
+  * [@jgreitemann@fosstodon.org](https://fosstodon.org/@jgreitemann)
 * Questions?
 
 [1]: https://greitemann.dev/pipe-assoc
