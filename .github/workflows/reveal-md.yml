@@ -19,11 +19,12 @@ jobs:
     - name: Stage missing assets
       run: >
         cp
-        assets/lightning.jpg
-        assets/github.svg
-        assets/twitter.svg
-        assets/mastodon.svg
-        _static/assets
+        lightning.jpg
+        github.svg
+        twitter.svg
+        mastodon.svg
+        qr.svg
+        _static/_assets
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:

@@ -101,19 +101,19 @@ li.no-bullets > ul > li::marker {
 }
 
 li > a[href^="https://github.com"]::before {
-    content: url("assets/github.svg");
+    content: url("github.svg");
     vertical-align: middle;
     margin-right: 0.5em;
 }
 
 li > a[href^="https://twitter.com"]::before {
-    content: url("assets/twitter.svg");
+    content: url("twitter.svg");
     vertical-align: middle;
     margin-right: 0.5em;
 }
 
 li > a[href^="https://fosstodon.org"]::before {
-    content: url("assets/mastodon.svg");
+    content: url("mastodon.svg");
     vertical-align: middle;
     margin-right: 0.5em;
 }

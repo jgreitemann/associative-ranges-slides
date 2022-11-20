@@ -1,4 +1,4 @@
-<!-- .slide: data-background-image="assets/lightning.jpg" data-background-opacity="0.4" -->
+<!-- .slide: data-background-image="_assets/lightning.jpg" data-background-opacity="0.4" -->
 ## `ranges::operator|` is&nbsp;associative
 
 <br/>
@@ -377,7 +377,7 @@ Notes:
 
 ---
 
-![assets/qr.svg](assets/qr.svg)
+![qr.svg](_assets/qr.svg)
 <!-- .element: class="qr" -->
 
 ### That's it
