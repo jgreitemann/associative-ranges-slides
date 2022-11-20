@@ -279,7 +279,7 @@ Notes:
 #### Can we use pipeline syntax for user-defined range adaptors?
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
@@ -311,7 +311,7 @@ inline constexpr sliding_mean_fn sliding_mean;
 
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
@@ -363,7 +363,7 @@ inline constexpr auto sliding_mean =
 
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
