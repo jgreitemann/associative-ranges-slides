@@ -22,6 +22,11 @@ https://greitemann.dev
 
 [cpponsea-talk]: https://www.youtube.com/watch?v=Ln_cVjJl680
 
+Notes:
+- MSVC has support for everything I'll show
+- Godbolt links at the end
+- Slideware
+
 ---
 
 <!-- .slide: data-auto-animate -->
@@ -63,6 +68,13 @@ std::array a = {3., 1., 4., 1., 5., 9., 2., 6., 5., 3.};
 fmt::print("{}\n", sliding_mean(a)
                    | std::views::transform(round_to_int));
 ```
+<!-- .element: class="fragment" -->
+
+Notes:
+- Tina used range-v3's `sliding` view
+- **Step**: Drop-in replacement
+- **Step**: {fmt} library
+- Eager
 
 ---
 
@@ -100,6 +112,12 @@ fmt::print("{}\n", sliding_mean(a)
                    | std::views::transform(round_to_int));
 ```
 
+Notes:
+- `ranges::to` dropped
+- **Step**: Returns lazy view; constrained
+- work happens in `fmt::print`
+- no heap allocation
+
 ---
 
 <!-- .slide: data-auto-animate -->
@@ -121,6 +139,10 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
 ```
 <!-- .element: class="mark question" -->
 
+Notes:
+- So far: `span` (contiguous + sized)
+- Doesn't work with e.g. `forward_range`s
+
 ----
 
 <!-- .slide: data-auto-animate -->
@@ -141,6 +163,11 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 
+Notes:
+- Becomes a function template
+- `slide` requires at least a `forward_range`
+- **Step**: Doesn't compile with `mean` as-is
+
 ----
 
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
@@ -151,6 +178,11 @@ constexpr auto mean(std::span<double const> rng) -> double {
 }
 ```
 <!-- .element: class="mark error squiggle-params" data-id="mean" -->
+
+Notes:
+- Also accepts `span`
+- Worked before b/c `slide` preserves contiguity
+- Needs to be generalized, too
 
 ----
 
@@ -167,6 +199,13 @@ constexpr auto mean(std::ranges::sized_range auto rng)
 }
 ```
 <!-- .element: class="mark error squiggle-return" data-id="mean" -->
+
+Notes:
+- Also becomes a function template
+- `slide` yields `sized_range`s
+- Problem:
+  - `<numeric>` algorithms not yet rangified
+  - Ranges iterators can have sentinels
 
 ----
 
@@ -190,6 +229,11 @@ constexpr auto mean(std::ranges::sized_range auto rng)
 ```
 <!-- .element: class="fragment mark error" -->
 
+Notes:
+- `common_view` works around this problem
+- This version compiles perfectly well
+- **Step**: But template cannot be used a function ref
+
 ----
 
 <!-- .slide: data-auto-animate -->
@@ -211,6 +255,11 @@ inline constexpr auto mean =
 ```
 <!-- .element: class="mark no-error" -->
 
+Notes:
+- Turn `mean` into a function object (e.g. lambda)
+- `mean` itself is not a template
+- Call operator is generic
+
 ---
 
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
@@ -221,6 +270,11 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark no-error" data-id="pipe-usage" -->
+
+Notes:
+- Functionally where we want to be (lazy)
+- Awkward to write
+- Potentially confusing (eager → lazy)
 
 ----
 
@@ -233,6 +287,9 @@ fmt::print("{}\n", std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark question" data-id="pipe-usage" -->
+
+Notes:
+- Difficult to enable in C++20 w/o injecting in `std::ranges`
 
 ----
 
@@ -263,10 +320,20 @@ fmt::print("{}\n", std::views::iota(0, 30)
 
 [p2387]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2387r3.html
 
+Notes:
+- Paper by Barry Revzin; accepted for C++23
+- CRTP base class `range_adaptor_closure`
+- Our function becomes its call operator
+- Customization point; not too much boilerplate
+
 ----
 
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
 #### `std::ranges::operator|` is associative
+
+Notes:
+- There's a much simpler way for composite adaptors
+- Circle back to title
 
 ----
 
@@ -303,6 +370,12 @@ fmt::print("{}\n", std::views::iota(0, 30)
 ```
 <!-- .element: class="mark no-error" data-id="pipe-usage" -->
 
+Notes:
+- Specify function object directly by composition
+- "Point-free" programming
+- Constraints of `slide` automatically carry over
+- Works in C++20 w/o support for P2387
+
 ---
 
 ![qr.svg](qr.svg)
@@ -312,7 +385,9 @@ fmt::print("{}\n", std::views::iota(0, 30)
 
 * Blog post, Godbolt links & slides: [https://greitemann.dev/pipe-assoc][1]
 * Questions?
-* Enjoy the main talk
-<!-- .element: class="fragment" -->
 
 [1]: https://greitemann.dev/pipe-assoc
+
+Notes:
+- Questions?
+- Enjoy the main talk
