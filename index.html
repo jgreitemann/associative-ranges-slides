@@ -16,17 +16,14 @@
   </head>
   <body>
     <div class="reveal">
-      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: data-background-image="lightning.jpg" data-background-opacity="0.4" -->
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: data-background-image="assets/lightning.jpg" data-background-opacity="0.4" -->
 ## `ranges::operator|` is&nbsp;associative
-<!-- .element: class="shadow" -->
 
 <br/>
 <br/>
 
 ### Jonas Greitemann
-<!-- .element: class="shadow" -->
 https://greitemann.dev
-<!-- .element: class="shadow" -->
 </script></section><section  data-markdown><script type="text/template">
 ### ⚠️ Disclaimer
 
@@ -291,6 +288,8 @@ fmt::print("{}\n", std::views::iota(0, 30)
 <!-- .element: class="mark question" data-id="pipe-usage" -->
 
 <aside class="notes"><ul>
+<li>Satisfying</li>
+<li>Avoids confusion: laziness implied</li>
 <li>Difficult to enable in C++20 w/o injecting in <code>std::ranges</code></li>
 </ul>
 </aside></script></section><section data-markdown><script type="text/template">
@@ -374,12 +373,16 @@ fmt::print("{}\n", std::views::iota(0, 30)
 <li>Works in C++20 w/o support for P2387</li>
 </ul>
 </aside></script></section></section><section  data-markdown><script type="text/template">
-![qr.svg](qr.svg)
+![assets/qr.svg](assets/qr.svg)
 <!-- .element: class="qr" -->
 
 ### That's it
 
 * Blog post, Godbolt links & slides: [https://greitemann.dev/pipe-assoc][1]
+* <!-- .element: class="no-bullets" --> Find me online
+  * [@jgreitemann](https://github.com/jgreitemann)
+  * [@jg424](https://twitter.com/jg424)
+  * [@jgreitemann@fosstodon.org](https://fosstodon.org/@jgreitemann)
 * Questions?
 
 [1]: https://greitemann.dev/pipe-assoc
