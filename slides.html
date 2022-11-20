@@ -16,7 +16,7 @@
   </head>
   <body>
     <div class="reveal">
-      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: data-background-image="assets/lightning.jpg" data-background-opacity="0.4" -->
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: data-background-image="_assets/lightning.jpg" data-background-opacity="0.4" -->
 ## `ranges::operator|` is&nbsp;associative
 
 <br/>
@@ -281,7 +281,7 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
 #### Can we use pipeline syntax for user-defined range adaptors?
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
@@ -312,7 +312,7 @@ inline constexpr sliding_mean_fn sliding_mean;
 
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
@@ -360,7 +360,7 @@ inline constexpr auto sliding_mean =
 
 ```cpp
 fmt::print("{}\n", std::views::iota(0, 30)
-                   | std::views::filter(is_even))
+                   | std::views::filter(is_even)
                    | sliding_mean
                    | std::views::transform(round_to_int));
 ```
@@ -373,7 +373,7 @@ fmt::print("{}\n", std::views::iota(0, 30)
 <li>Works in C++20 w/o support for P2387</li>
 </ul>
 </aside></script></section></section><section  data-markdown><script type="text/template">
-![assets/qr.svg](assets/qr.svg)
+![qr.svg](_assets/qr.svg)
 <!-- .element: class="qr" -->
 
 ### That's it
