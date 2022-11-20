@@ -37,7 +37,13 @@ https://greitemann.dev
 * No perfect forwarding
 
 [cpponsea-talk]: https://www.youtube.com/watch?v=Ln_cVjJl680
-</script></section><section ><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>MSVC has support for everything I&#39;ll show</li>
+<li>Godbolt links at the end</li>
+<li>Slideware</li>
+</ul>
+</aside></script></section><section ><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Tina's `sliding_mean` example
 
@@ -75,7 +81,15 @@ std::array a = {3., 1., 4., 1., 5., 9., 2., 6., 5., 3.};
 fmt::print("{}\n", sliding_mean(a)
                    | std::views::transform(round_to_int));
 ```
-</script></section></section><section ><section data-markdown><script type="text/template">
+<!-- .element: class="fragment" -->
+
+<aside class="notes"><ul>
+<li>Tina used range-v3&#39;s <code>sliding</code> view</li>
+<li><strong>Step</strong>: Drop-in replacement</li>
+<li><strong>Step</strong>: {fmt} library</li>
+<li>Eager</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
 #### Eager evaluation
 <!-- .element: data-id="gif-heading" -->
 
@@ -105,7 +119,14 @@ std::array a = {3., 1., 4., 1., 5., 9., 2., 6., 5., 3.};
 fmt::print("{}\n", sliding_mean(a)
                    | std::views::transform(round_to_int));
 ```
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li><code>ranges::to</code> dropped</li>
+<li><strong>Step</strong>: Returns lazy view; constrained</li>
+<li>work happens in <code>fmt::print</code></li>
+<li>no heap allocation</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Can we be even more lazy?
 ```cpp []
@@ -124,7 +145,12 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark question" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>So far: <code>span</code> (contiguous + sized)</li>
+<li>Doesn&#39;t work with e.g. <code>forward_range</code>s</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Accepting ranges as function arguments
 ```cpp [1,2|1,2,5]
@@ -142,7 +168,13 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
                                 | std::views::filter(is_even))
                    | std::views::transform(round_to_int));
 ```
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Becomes a function template</li>
+<li><code>slide</code> requires at least a <code>forward_range</code></li>
+<li><strong>Step</strong>: Doesn&#39;t compile with <code>mean</code> as-is</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
 #### Generalizing `mean` to work with ranges
 ```cpp
@@ -151,7 +183,13 @@ constexpr auto mean(std::span<double const> rng) -> double {
 }
 ```
 <!-- .element: class="mark error squiggle-params" data-id="mean" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Also accepts <code>span</code></li>
+<li>Worked before b/c <code>slide</code> preserves contiguity</li>
+<li>Needs to be generalized, too</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Generalizing `mean` to work with ranges
 ```cpp
@@ -165,7 +203,17 @@ constexpr auto mean(std::ranges::sized_range auto rng)
 }
 ```
 <!-- .element: class="mark error squiggle-return" data-id="mean" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Also becomes a function template</li>
+<li><code>slide</code> yields <code>sized_range</code>s</li>
+<li>Problem:<ul>
+<li><code>&lt;numeric&gt;</code> algorithms not yet rangified</li>
+<li>Ranges iterators can have sentinels</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Generalizing `mean` to work with ranges
 ```cpp
@@ -185,7 +233,13 @@ constexpr auto mean(std::ranges::sized_range auto rng)
    ... | std::views::transform(mean)
 ```
 <!-- .element: class="fragment mark error" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li><code>common_view</code> works around this problem</li>
+<li>This version compiles perfectly well</li>
+<li><strong>Step</strong>: But template cannot be used a function ref</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Generalizing `mean` to work with ranges
 ```cpp
@@ -204,7 +258,13 @@ inline constexpr auto mean =
    ... | std::views::transform(mean)
 ```
 <!-- .element: class="mark no-error" -->
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Turn <code>mean</code> into a function object (e.g. lambda)</li>
+<li><code>mean</code> itself is not a template</li>
+<li>Call operator is generic</li>
+</ul>
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
 #### Functionally complete, but ugly...
 ```cpp
@@ -213,7 +273,13 @@ fmt::print("{}\n", sliding_mean(std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark no-error" data-id="pipe-usage" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Functionally where we want to be (lazy)</li>
+<li>Awkward to write</li>
+<li>Potentially confusing (eager → lazy)</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### Can we use pipeline syntax for user-defined range adaptors?
 ```cpp
@@ -223,7 +289,11 @@ fmt::print("{}\n", std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark question" data-id="pipe-usage" -->
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Difficult to enable in C++20 w/o injecting in <code>std::ranges</code></li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### [P2387: Pipe support for user-defined range adaptors][p2387]
 ```cpp
@@ -250,10 +320,22 @@ fmt::print("{}\n", std::views::iota(0, 30)
 <!-- .element: class="mark no-error" data-id="pipe-usage" -->
 
 [p2387]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2387r3.html
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Paper by Barry Revzin; accepted for C++23</li>
+<li>CRTP base class <code>range_adaptor_closure</code></li>
+<li>Our function becomes its call operator</li>
+<li>Customization point; not too much boilerplate</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate data-auto-animate-restart -->
 #### `std::ranges::operator|` is associative
-</script></section><section data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>There&#39;s a much simpler way for composite adaptors</li>
+<li>Circle back to title</li>
+</ul>
+</aside></script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-auto-animate -->
 #### `std::ranges::operator|` is associative
 
@@ -284,7 +366,14 @@ fmt::print("{}\n", std::views::iota(0, 30)
                    | std::views::transform(round_to_int));
 ```
 <!-- .element: class="mark no-error" data-id="pipe-usage" -->
-</script></section></section><section  data-markdown><script type="text/template">
+
+<aside class="notes"><ul>
+<li>Specify function object directly by composition</li>
+<li>&quot;Point-free&quot; programming</li>
+<li>Constraints of <code>slide</code> automatically carry over</li>
+<li>Works in C++20 w/o support for P2387</li>
+</ul>
+</aside></script></section></section><section  data-markdown><script type="text/template">
 ![qr.svg](qr.svg)
 <!-- .element: class="qr" -->
 
@@ -292,11 +381,14 @@ fmt::print("{}\n", std::views::iota(0, 30)
 
 * Blog post, Godbolt links & slides: [https://greitemann.dev/pipe-assoc][1]
 * Questions?
-* Enjoy the main talk
-<!-- .element: class="fragment" -->
 
 [1]: https://greitemann.dev/pipe-assoc
-</script></section></div>
+
+<aside class="notes"><ul>
+<li>Questions?</li>
+<li>Enjoy the main talk</li>
+</ul>
+</aside></script></section></div>
     </div>
 
     <script src="./dist/reveal.js"></script>
